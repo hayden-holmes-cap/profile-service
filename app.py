@@ -19,7 +19,7 @@ import os
 
 from azure.identity import DefaultAzureCredential
 from azure.storage.filedatalake import DataLakeServiceClient
-
+ACCOUNT_NAME="mstorageaccount213"
 try:
     credential = DefaultAzureCredential()
     print("CREDENTIAL CREATED")
