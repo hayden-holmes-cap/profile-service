@@ -36,9 +36,17 @@ jobs:
         with:
           appSourcePath: ${{ github.workspace }}
           dockerfilePath: ./Dockerfile
-      
+        
           registryUrl: dqmsacr.azurecr.io
           registryUsername: ${{ secrets.PROFILESERVICE_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.PROFILESERVICE_REGISTRY_PASSWORD }}
+        
+          containerAppName: profile-service
+          resourceGroup: ms-explore
+        
+          imageToBuild: dqmsacr.azurecr.io/profile-service:${{ github.sha }}
+        
+          targetPort: 8000
+          ingress: external
 
 
