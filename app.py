@@ -16,13 +16,14 @@ app = FastAPI()
 
 import os
 
-ACCOUNT_NAME = os.getenv("STORAGE_ACCOUNT")
-ACCOUNT_KEY = os.getenv("STORAGE_KEY")
+from azure.identity import DefaultAzureCredential
+from azure.storage.filedatalake import DataLakeServiceClient
 
+ACCOUNT_NAME = "mstorageaccount213"
 
 service_client = DataLakeServiceClient(
     account_url=f"https://{ACCOUNT_NAME}.dfs.core.windows.net",
-    credential=ACCOUNT_KEY
+    credential=DefaultAzureCredential()
 )
 
 
