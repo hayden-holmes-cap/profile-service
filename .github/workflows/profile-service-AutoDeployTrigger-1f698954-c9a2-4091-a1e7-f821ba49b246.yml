@@ -35,15 +35,8 @@ jobs:
         uses: azure/container-apps-deploy-action@v2
         with:
           appSourcePath: ${{ github.workspace }}
-          _dockerfilePathKey_: _dockerfilePath_
-          _targetLabelKey_: _targetLabel_
-          registryUrl: 
-          registryUsername: ${{ secrets.PROFILESERVICE_REGISTRY_USERNAME }}
-          registryPassword: ${{ secrets.PROFILESERVICE_REGISTRY_PASSWORD }}
-          containerAppName: profile-service
+          dockerfilePath: ./Dockerfile
+          containerAppName: upload-service
           resourceGroup: ms-explore
-          imageToBuild: default/[parameters('containerAppName')]:${{ github.sha }}
-          _buildArgumentsKey_: |
-            _buildArgumentsValues_
 
 
