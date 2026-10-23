@@ -1,3 +1,4 @@
+print("PROFILE SERVICE STARTING")
 from fastapi import FastAPI
 
 from azure.storage.filedatalake import (
@@ -19,12 +20,21 @@ import os
 from azure.identity import DefaultAzureCredential
 from azure.storage.filedatalake import DataLakeServiceClient
 
-ACCOUNT_NAME = "mstorageaccount213"
+try:
+    credential = DefaultAzureCredential()
+    print("CREDENTIAL CREATED")
 
-service_client = DataLakeServiceClient(
-    account_url=f"https://{ACCOUNT_NAME}.dfs.core.windows.net",
-    credential=DefaultAzureCredential()
-)
+    service_client = DataLakeServiceClient(
+        account_url=f"https://{ACCOUNT_NAME}.dfs.core.windows.net",
+        credential=credential
+    )
+
+    print("SERVICE CLIENT CREATED")
+
+except Exception as e:
+    print("STARTUP FAILED")
+    print(str(e))
+    raise
 
 
 @app.get("/health")
