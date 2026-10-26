@@ -43,4 +43,5 @@ jobs:
           az containerapp update \
             --name profile-service \
             --resource-group ms-explore \
+            --container-name profile-service \
             --image dqmsacr.azurecr.io/profile-service:${{ github.sha }}
