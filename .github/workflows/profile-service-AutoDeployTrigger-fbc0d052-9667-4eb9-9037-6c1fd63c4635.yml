@@ -1,0 +1,46 @@
+name: Deploy profile-service
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.PROFILESERVICE_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.PROFILESERVICE_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.PROFILESERVICE_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR
+        run: |
+          echo "${{ secrets.PROFILESERVICE_REGISTRY_PASSWORD }}" | docker login dqmsacr.azurecr.io -u ${{ secrets.PROFILESERVICE_REGISTRY_USERNAME }} --password-stdin
+
+      - name: Build Image
+        run: |
+          docker build -t dqmsacr.azurecr.io/profile-service:${{ github.sha }} .
+
+      - name: Push Image
+        run: |
+          docker push dqmsacr.azurecr.io/profile-service:${{ github.sha }}
+
+      - name: Update Container App
+        run: |
+          az containerapp update \
+            --name profile-service \
+            --resource-group ms-explore \
+            --image dqmsacr.azurecr.io/profile-service:${{ github.sha }}
